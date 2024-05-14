@@ -1,0 +1,151 @@
+/*
+ * sequenciaLista.c
+ */
+
+#include <stdbool.h>
+#include <stdlib.h>
+
+#include "../iterador/iterador.h"
+#include "no.h"
+#include "sequencia.h"
+
+// Estrutura de dados: sequencia implementada com lista ligada simples
+struct _sequencia{
+	no cabeca;		// acesso ao primeiro no
+	no cauda;		// acesso ao ultimo no
+	int numElems;		// conveniencia
+	destroiFun destroi;	// funcao de destruicao dos elementos
+};
+
+sequencia criaSequencia(int cap, destroiFun destroi){
+	sequencia s = malloc(sizeof(struct _sequencia));
+	if ( s == NULL) return NULL;
+	s->cabeca = NULL;
+	s->cauda = NULL;
+	s->numElems = 0;
+	s->destroi = destroi; /* guarda-se aqui, para quando for preciso usar */
+	return s;
+}
+
+void destroiSequencia (sequencia s){
+	no aux = s->cabeca;
+	while (aux != NULL){
+		s->cabeca = segNo(aux);
+		destroiNo(aux); /* destroi o no, mas mantem o elemento */
+		aux = s->cabeca;
+	}
+	free(s);
+}
+
+void destroiSeqEElems(sequencia s){
+	no aux = s->cabeca;
+	while (aux != NULL){
+		s->cabeca = segNo(aux);
+		s->destroi(elemNo(aux));/* destroi o elemento */
+		destroiNo(aux);		/* ... e também o seu no */
+		aux = s->cabeca;
+	}
+	free(s);
+}
+
+bool vaziaSequencia(sequencia s){
+	return s->numElems == 0;
+}
+
+int tamanhoSequencia(sequencia s){
+	return s->numElems;
+}
+
+void * elementoPosSequencia(sequencia s, int i){
+	no aux = s->cabeca;
+	if (i == s->numElems-1)
+		return elemNo(s->cauda);
+	for (int j = 0; j < i; j++)
+		aux = segNo(aux);
+	return elemNo(aux);
+}
+
+void adCabeca(sequencia s, void * e){
+	no aux = criaNo(e,s->cabeca);
+	s->cabeca = aux;
+	if (s->numElems == 0) // se sequencia vazia
+		s->cauda = aux;
+	s->numElems++;
+}
+
+// precondicao : lista nao e' vazia
+void adCauda(sequencia s, void * e){
+	no aux = criaNo(e,NULL);
+	atribuiSegNo(s->cauda,aux);
+	s->cauda = aux;
+	s->numElems++;
+}
+
+void adMeio (sequencia s, void * e, int i){
+	no aux = s->cabeca;
+	no novo = criaNo(e,NULL);
+	for (int j = 0; j < i-1; j++)
+		aux = segNo(aux);
+	atribuiSegNo(novo,segNo(aux));
+	atribuiSegNo(aux,novo);
+	s->numElems ++;
+}
+
+void adicionaPosSequencia(sequencia s, void * elem, int i){
+	if (i == 0)
+		adCabeca(s, elem);
+	else if (i == s->numElems)
+		adCauda(s,elem);
+	else
+		adMeio(s,elem,i);
+}
+
+// precondicao : lista nao e' vazia
+void * rmCabeca(sequencia s){
+	no aux = s->cabeca;
+	void * elem;
+	s->cabeca = segNo(aux);
+	if (s->numElems == 1) // sequencia com um so' elemento
+		s->cauda = NULL;
+	s->numElems--;
+	elem = elemNo(aux);
+	destroiNo (aux);
+	return elem;
+}
+
+// precondicao: i > 0
+void * rmPos(sequencia s, int i){
+	no remove, aux = s->cabeca;
+	void * elem;
+	for(int j = 0; j < i-1; j++)
+		aux = segNo(aux);
+	remove=segNo(aux);
+	atribuiSegNo(aux,segNo(remove));
+	if (i == tamanhoSequencia(s)-1)
+		s->cauda=aux;
+	s->numElems--;
+	elem = elemNo(remove);
+	destroiNo (remove);
+	return elem;
+}
+
+void * removePosSequencia(sequencia s, int i){
+	if (i == 0)
+		return rmCabeca(s);
+	else
+		return rmPos(s,i);
+}
+
+void ** converteParaVetor(sequencia s){
+	void ** vetor = malloc(sizeof(void *) * s->numElems);
+	no tmp = s->cabeca;
+	for (int i = 0; i < s->numElems; i++){
+		vetor[i] = elemNo(tmp);
+		tmp = segNo(tmp);
+	}
+	return vetor;
+}
+
+iterador iteradorSequencia(sequencia s){
+	return criaIterador(converteParaVetor(s), s->numElems);
+}

@@ -1,0 +1,62 @@
+/*
+ * pilhaSequencia.c
+ */
+
+#include <stdbool.h>
+#include <stdlib.h>
+
+#include "../iterador/iterador.h"
+#include "../sequencia/sequencia.h"
+#include "pilha.h"
+
+/* Estrutura de dados: pilha ---> comportamento “Último a chegar, Primeiro a sair” */
+struct _pilha{
+	sequencia elems;
+	destroiFun destroi;
+};
+
+pilha criaPilha(int cap, destroiFun destroi){
+	pilha p = malloc(sizeof(struct _pilha));
+	if (p == NULL) return NULL;
+	p->elems = criaSequencia(cap, destroi);
+	if (p->elems == NULL){
+		free(p);
+		return NULL;
+	}
+	p->destroi = destroi; /* guarda-se aqui, para quando for preciso usar */
+	return p;
+}
+
+void destroiPilha (pilha p ){
+	destroiSequencia(p->elems);
+	free(p);
+}
+
+void destroiPilhaEElems(pilha p){
+	destroiSeqEElems(p->elems);
+	free(p);
+}
+
+bool vaziaPilha(pilha p){
+	return vaziaSequencia(p->elems);
+}
+
+/* As operaçcoes seguintes, de manipulacao do topo da pilha estão
+   otimizadas para a implementacao sequenciaVetor.c */
+
+void * topoPilha(pilha p){
+	int topo = tamanhoPilha(p) - 1;
+	return elementoPosSequencia(p->elems, topo);
+}
+
+void emPilha(pilha p, void * elem){
+	int topo = tamanhoPilha(p) - 1;
+	adicionaPosSequencia(p->elems,elem, topo+1);
+}
+
+void * desemPilha(pilha p){
+	int topo = tamanhoPilha(p) - 1;
+	return removePosSequencia(p->elems, topo);
+}
+
+
