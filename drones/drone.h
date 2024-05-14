@@ -67,4 +67,10 @@ Pre-condições: d != NULL
 ***********************************************/
 int restoManutencaoDrone(drone d);
 
+/*cometar*/
+void cmdBasedrone(char *linha, drone d);
+
+/*comentar*/
+void cmdColetivodrone(char *linha, drone d);
+
 #endif /* DRONE_H_ */
