@@ -1,85 +1,94 @@
-#include <stdbool.h>
-#include <stddef.h>
-#include <stdio.h>
-#include <stdlib.h>
+/* drone.c */
 
-#include "drone.h"  
-    
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+
+#include "drone.h"
+
 struct _drone{
-    char *cat; //"basico" : "coletivo";
-	int id; // indentidade do drone é unico 
-	int cap; // capacidade do drone me kg
-	int alc; // alacance do drone em KM
-	int alcD; // alcance que o drone ainda tem em KM
-	int voo; // horas de viagem
-	int man; // horas que ainda falta de manutenção 
+    int *cat; // se é coletivo ou se é basico
+    int id; // inteiro que corresponde a cada drone
+    int cap; // capacidade de carga
+    int alc; // alcance que o drone consegue voar
+    int alcD; // alacance disponivel de um drone
+    int voo; // ainda falta 'N' horas de voo
+    int man; // horas de manutenção que faltam(para qlq drone é sempre 3 horas)
 };
 
+drone criaDrone(int capacidade, int alcance){ 
+    drone d = (drone) malloc(sizeof(struct _drone));
+    if(d == NULL)
+        return NULL;
 
-_drone criadrone() {
-    _drone d = (_drone)malloc(sizeof(struct _drone));
+    d->cat = NULL; // Categoria não especificada
+    d->id = 0; 
+    d->cap = capacidade; 
+    d->alc = alcance; 
+    d->alcD = 0; //alcance disponivel
+    d->voo = 0;
+    d->man = 0; //mauntencao
 
-    if (d == NULL) {
-        printf("Erro ao alocar memória para o drone\n");			
-        return NULL; // Return NULL if memory allocation fails
-    }
-
-    // Initialize members of the drone object
-    d->cat = NULL; // Initialize cat to NULL or assign it a value
-    d->id = 0; // Initialize id to 0 or assign it a value
-    d->cap = 0; // Initialize cap to 0 or assign it a value
-    d->alc = 0; // Initialize alc to 0 or assign it a value
-    d->alcD = 0; // Initialize alcD to 0 or assign it a value
-    d->voo = 0; // Initialize voo to 0 or assign it a value
-    d->man = 0; // Initialize man to 0 or assign it a value
-
-    return d; // Return the created drone object
-}
-bool basicoDrone(_drone d){
-
-	return false;
+    return d;
 }
 
-int idDrone(_drone d){
-
-
-	return d->id;
+void destroiDrone(drone d){
+    free(d);
 }
 
-int capacidadeCargaDrone(_drone d){
 
-	return d->cap;
+int idDrone(drone d){
+    return d->id;
 }
 
-int alcanceDrone(_drone d){
 
-	return 0;
+int capacidadeCargaDrone(drone d){
+    return d->cap;
+
 }
 
-int alcanceDisponivelDrone(_drone d){
 
-	return 0;
+int alcanceDrone(drone d){
+    return d->alc;
+
 }
 
-int restoVooDrone(_drone d){
+int alcanceDisponivelDrone(drone d){
+    return d->alcD;
 
-	return 0;
 }
 
-int restoManutencaoDrone(_drone d){
+int restoVooDrone(drone d){
+    return d->voo;
 
-	return 0;
 }
 
-/*void drone_Base(void){
-    int _cap, _alc;
-    
-    // Ler os valores da linha ignorando o primeiro caractere (o comando)
-    sscanf(linha + 1, "%d %d", &_cap, &_alc);
+int restoManutencaoDrone(drone d){
+	return d->man;
+   
+}
+
+void cmdBasedrone(char *linha, drone d){
+    int alc_, cap_;
+
+    alc_ = 0;
+    cap_ = 0;
+
+    sscanf(linha + 1, "%d %d", &alc_, &cap_);
+
+    d->alc = alc_;
+    d->cap = cap_;
     d->id++;
-    d->cap = _cap;
-    d->alc = _alc;
-
+    d->cat = "basico";
     // Imprimir os valores para verificar se foram lidos corretamente
-    printf("ID: %d, Capacidade: %d, Alcance: %d\n\n", d->id, d->cap, d->alc);
-}*/
+    printf("Adicionado drone(cat=%s, id=%d, cap=%d, alc=%d/%d, voo=%d, manut=%d)", d->cat,);
+}
+
+
+void cmdColetivodrone(char *linha, drone d){
+    //alcance do drone coletivo é o menor do alcance entre os drones que formam o coletivo
+    int nrmdrones[5];
+
+	sscanf(linha + 1, "%d %d %d %d %d %d", &nrmdrones[0], &nrmdrones[1], &nrmdrones[2], &nrmdrones[3], &nrmdrones[4], &nrmdrones[5]);
+}
+
