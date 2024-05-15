@@ -6,9 +6,10 @@
 
 #include "TADs/iterador/iterador.h"
 
+#include "base.h"
 #include "sistema.h"
 #include "drone.h"
-#include "base.h"
+#include "coordenadas.h"
 
 #define MAX_LINHA	80
 
@@ -79,8 +80,8 @@ void cmdMenu(void){
 	printf("  . - finaliza a execução do programa\n");
 }
 
-void interpretador(sistema s, drone **base_drones, int *num_drones){
-	
+void interpretador(sistema s, base b, int *num_drones){
+
 	char linha[MAX_LINHA], cmd;
 	do {
 		printf("> ");
@@ -91,7 +92,15 @@ void interpretador(sistema s, drone **base_drones, int *num_drones){
 		cmd = toupper(linha[0]);
 		//printf("%s", linha);
 		switch (cmd){
-			case 'B': cmdBasedrone(linha, base_drones, num_drones);
+			case 'B':
+				int cap, alc;
+
+    			if(sscanf(linha + 1, "%d %d", &cap, &alc) != 2){
+        			printf("Não pode fazer isso.\n");
+					break;
+    			}
+
+				cmdBasedrone(linha, b, num_drones);
     			break;
 
 			//case 'C': criaDroneColetivo(linha, d);
@@ -114,12 +123,16 @@ void interpretador(sistema s, drone **base_drones, int *num_drones){
 
 int main(void){
 	//int cap = 0, alc = 0;
+	char *nome = "WASD";
 	sistema s = criaSistema();
 
-	drone *base_drones[100];
+	coordenadas c = criaCoordenadas(10,10);
+
+	base b = criaBase(nome, c);
+
 	int num_drones = 0;
 
-	interpretador(s, base_drones, &num_drones);
+	interpretador(s, b, &num_drones);
 	
 	destroiSistema(s);
 	//txtDrone(d, linha);
@@ -128,5 +141,3 @@ int main(void){
 	
 	
 }
-
-
