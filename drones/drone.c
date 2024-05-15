@@ -70,8 +70,9 @@ int restoManutencaoDrone(drone d){
    
 }
 
-void cmdBasedrone(char *linha, drone **base_drone, int *num_drones) {
-    int cap, alc;
+void cmdBasedrone(char *linha, base b, int *num_drones) {
+    int cap = 0, alc = 0;
+
     sscanf(linha + 1, "%d %d", &cap, &alc);
 
     // Criar um novo drone
@@ -86,7 +87,7 @@ void cmdBasedrone(char *linha, drone **base_drone, int *num_drones) {
     novo_drone->cat = "basico";
 
     // Adicionar o novo drone à base de drones
-    base_drone[*num_drones - 1] = &novo_drone;
+    adicionaDroneBase(b, novo_drone);
 
     // Imprimir as informações do novo drone
     printf("Adicionado drone(cat=%s, id=%d, cap=%d, alc=%d/%d, voo=%d, manut=%d)\n", novo_drone->cat, novo_drone->id, novo_drone->cap, novo_drone->alcD, novo_drone->alc, novo_drone->voo, novo_drone->man);
@@ -122,4 +123,3 @@ void Saber_merdas(drone d){
     printf("Cpacidade: %d", capacidadeCargaDrone(d));
 }
 */
-
