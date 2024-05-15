@@ -3,11 +3,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 #include "drone.h"
+#include "base.h"
 
 struct _drone{
-    int *cat; // se é coletivo ou se é basico
+    char *cat; // se é coletivo ou se é basico
     int id; // inteiro que corresponde a cada drone
     int cap; // capacidade de carga
     int alc; // alcance que o drone consegue voar
@@ -68,27 +70,56 @@ int restoManutencaoDrone(drone d){
    
 }
 
-void cmdBasedrone(char *linha, drone d){
-    int alc_, cap_;
+void cmdBasedrone(char *linha, drone **base_drone, int *num_drones) {
+    int cap, alc;
+    sscanf(linha + 1, "%d %d", &cap, &alc);
 
-    alc_ = 0;
-    cap_ = 0;
+    // Criar um novo drone
+    drone novo_drone = criaDrone(cap, alc);
+    if (novo_drone == NULL) {
+        printf("Erro ao criar o novo drone\n");
+        return;
+    }
 
-    sscanf(linha + 1, "%d %d", &alc_, &cap_);
+    // Atualizar o ID do novo drone e a categoria
+    novo_drone->id = ++(*num_drones);
+    novo_drone->cat = "basico";
 
-    d->alc = alc_;
-    d->cap = cap_;
-    d->id++;
-    d->cat = "basico";
-    // Imprimir os valores para verificar se foram lidos corretamente
-    printf("Adicionado drone(cat=%s, id=%d, cap=%d, alc=%d/%d, voo=%d, manut=%d)", d->cat,);
+    // Adicionar o novo drone à base de drones
+    base_drone[*num_drones - 1] = &novo_drone;
+
+    // Imprimir as informações do novo drone
+    printf("Adicionado drone(cat=%s, id=%d, cap=%d, alc=%d/%d, voo=%d, manut=%d)\n", novo_drone->cat, novo_drone->id, novo_drone->cap, novo_drone->alcD, novo_drone->alc, novo_drone->voo, novo_drone->man);
 }
 
 
-void cmdColetivodrone(char *linha, drone d){
+
+/*
+void criaDroneColetivo(char *linha, drone d){
     //alcance do drone coletivo é o menor do alcance entre os drones que formam o coletivo
     int nrmdrones[5];
+    int id_coletivo = 0, cap_coletivo = 0, alc_coletivo = 0;
+    char categoria_coletivo[12] = "coletivo";
 
+    drone d1 = criaDrone(cap_coletivo, alc_coletivo);
+    int a = idDrone(d);
+    a++;
+    
 	sscanf(linha + 1, "%d %d %d %d %d %d", &nrmdrones[0], &nrmdrones[1], &nrmdrones[2], &nrmdrones[3], &nrmdrones[4], &nrmdrones[5]);
+
+    for(int i = 0; i < 6; i++){
+        if(nrmdrones[i] == 0){
+            
+        }
+        
+    }
+    printf("Adicionado drone(cat=%s, id=%d, cap=%d, alc=%d/%d, voo=%d, manut=%d, elems(%d, %d))\n", categoria_coletivo, id_coletivo, d->cap, d->alcD, d->alc, d->voo, d->man, d->id, d->id);
+
 }
+
+void Saber_merdas(drone d){
+    printf("Id: %d", idDrone(d));
+    printf("Cpacidade: %d", capacidadeCargaDrone(d));
+}
+*/
 
