@@ -8,6 +8,7 @@
 
 #include "sistema.h"
 #include "drone.h"
+#include "base.h"
 
 #define MAX_LINHA	80
 
@@ -39,9 +40,9 @@ void txtColetivo(drone d, char *txt){
 	strcat(txt, ")");
 	destroiIterador(it);
 }
-*/
-void txtDrone(_drone d, char *txt){
-	char *cat = basicoDrone(d) ? "basico" : "coletivo";
+
+void txtDrone(drone d, char *txt){
+	char *cat; //basicoDrone(d) ? "basico" : "coletivo";
 	int id = idDrone(d);
 	int cap = capacidadeCargaDrone(d);
 	int alc = alcanceDrone(d);
@@ -54,7 +55,7 @@ void txtDrone(_drone d, char *txt){
 	sprintf(txt, "drone(cat=%s, id=%d, cap=%d, alc=%d/%d, voo=%d, manut=%d%s)",
 		cat, id, cap, alcD, alc, voo, man, aux);
 }
-
+*/
 
 void cmdTempoAvanca(sistema s, char *linha){
 	char ignora;
@@ -78,7 +79,7 @@ void cmdMenu(void){
 	printf("  . - finaliza a execução do programa\n");
 }
 
-void interpretador(sistema s){
+void interpretador(sistema s, drone **base_drones, int *num_drones){
 	
 	char linha[MAX_LINHA], cmd;
 	do {
@@ -90,28 +91,18 @@ void interpretador(sistema s){
 		cmd = toupper(linha[0]);
 		//printf("%s", linha);
 		switch (cmd){
-			case 'B':
-
-				typedef struct _drone *_drone;     
-				int _cap, _alc;
-
-    				// Ler os valores da linha ignorando o primeiro caractere (o comando)
-    				sscanf(linha + 1, "%d %d", &_cap, &_alc);
-   					d->id++;
-    				d->cap = _cap;
-    				d->alc = _alc;
-
-    			// Imprimir os valores para verificar se foram lidos corretamente
-    			printf("ID: %d, Capacidade: %d, Alcance: %d\n\n", d->id, d->cap, d->alc);
-
+			case 'B': cmdBasedrone(linha, base_drones, num_drones);
     			break;
 
-			case 'C':
-				typedef struct _drone _drone;
-				int nmr_drones[5],
+			//case 'C': criaDroneColetivo(linha, d);
+				//break;
 
-				sscanf(linha + 1, "%d %d %d %d %d %d", &nmr_drones[0], &nmr_drones[1], &nmr_drones[2], &nmr_drones[3], &nmr_drones[4]);
+			case 'E':
+				printf("Nova encomenda\n");
+				break;
+				
 			case 'T': cmdTempoAvanca(s, linha); break;
+
 			case '?': cmdMenu(); break;
 			case '.': break;
 			case '\n': break;
@@ -122,9 +113,14 @@ void interpretador(sistema s){
 }
 
 int main(void){
-
+	//int cap = 0, alc = 0;
 	sistema s = criaSistema();
-	interpretador(s);
+
+	drone *base_drones[100];
+	int num_drones = 0;
+
+	interpretador(s, base_drones, &num_drones);
+	
 	destroiSistema(s);
 	//txtDrone(d, linha);
 	//printf("%s", linha);
