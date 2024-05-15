@@ -5,7 +5,7 @@
 
 /* Tipo de dados: drone */
 typedef struct _drone* drone;
-
+typedef struct _base* base;
 /***********************************************
 criaDrone - Criação de uma instância da estrutura associada ao tipo drone.
 Parametros: matricula - matrícula do drone
@@ -67,10 +67,12 @@ Pre-condições: d != NULL
 ***********************************************/
 int restoManutencaoDrone(drone d);
 
-void cmdBasedrone(char *linha, drone **base_drone, int *num_drones);
+void cmdBasedrone(char *linha, base b, int *num_drones);
 
-void criaDroneColetivo(char *linha, drone d);
+//void criaDroneColetivo(char *linha, drone d);
 
-void Saber_merdas(drone d); 
+
+
+//void Saber_merdas(drone d); 
 
 #endif /* DRONE_H_ */
