@@ -14,7 +14,7 @@ Parametros: matricula - matrícula do drone
 Retorno: apontador para a instância criada
 Pre-condições:
 ***********************************************/
-drone criaDrone(int capacidade, int alcanceo); 
+drone criaDrone(int capacidade, int alcance); 
 
 /*falta comentar*/
 void destroiDrone(drone d);
@@ -67,10 +67,10 @@ Pre-condições: d != NULL
 ***********************************************/
 int restoManutencaoDrone(drone d);
 
-/*cometar*/
-void cmdBasedrone(char *linha, drone d);
+void cmdBasedrone(char *linha, drone **base_drone, int *num_drones);
 
-/*comentar*/
-void cmdColetivodrone(char *linha, drone d);
+void criaDroneColetivo(char *linha, drone d);
+
+void Saber_merdas(drone d); 
 
 #endif /* DRONE_H_ */
