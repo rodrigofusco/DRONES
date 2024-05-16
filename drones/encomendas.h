@@ -1,7 +1,8 @@
 #ifndef ENCOMENDAS_H_
 #define ENCOMENDAS_H_
 
-/* Tipo de dados: encomenda */
+#include "base.h"
+
 typedef struct _encomenda *encomenda;
 
 /***********************************************
@@ -28,18 +29,60 @@ Pre-condições: linha!=NULL, b!=NULL, num_encomendas!=NULL
 ***********************************************/
 void cmdBaseEncomenda(char *linha, base b, int *num_encomendas);
 
+/***********************************************
+idEncomenda - Obtém o ID da encomenda.
+Parâmetros: e - encomenda da qual se quer obter o ID
+Retorno: ID da encomenda
+Pre-condições: e!=NULL
+***********************************************/
 int idEncomenda(encomenda e);
 
+/***********************************************
+pesoEncomenda - Obtém o peso da encomenda.
+Parâmetros: e - encomenda da qual se quer obter o peso
+Retorno: peso da encomenda
+Pre-condições: e!=NULL
+***********************************************/
 int pesoEncomenda(encomenda e);
 
+/***********************************************
+latitudeEncomenda - Obtém a latitude do destino da encomenda.
+Parâmetros: e - encomenda da qual se quer obter a latitude
+Retorno: latitude do destino da encomenda
+Pre-condições: e!=NULL
+***********************************************/
 int latitudeEncomenda(encomenda e);
 
+/***********************************************
+longitudeEncomenda - Obtém a longitude do destino da encomenda.
+Parâmetros: e - encomenda da qual se quer obter a longitude
+Retorno: longitude do destino da encomenda
+Pre-condições: e!=NULL
+***********************************************/
 int longitudeEncomenda(encomenda e);
 
+/***********************************************
+criacaoEncomenda - Obtém o tempo de criação da encomenda.
+Parâmetros: e - encomenda da qual se quer obter o tempo de criação
+Retorno: tempo de criação da encomenda
+Pre-condições: e!=NULL
+***********************************************/
 int criacaoEncomenda(encomenda e);
 
+/***********************************************
+saidaEncomenda - Obtém o tempo de saída da encomenda.
+Parâmetros: e - encomenda da qual se quer obter o tempo de saída
+Retorno: tempo de saída da encomenda
+Pre-condições: e!=NULL
+***********************************************/
 int saidaEncomenda(encomenda e);
 
+/***********************************************
+entregaEncomenda - Obtém o tempo de entrega da encomenda.
+Parâmetros: e - encomenda da qual se quer obter o tempo de entrega
+Retorno: tempo de entrega da encomenda
+Pre-condições: e!=NULL
+***********************************************/
 int entregaEncomenda(encomenda e);
 
 #endif /* ENCOMENDAS_H_ */
