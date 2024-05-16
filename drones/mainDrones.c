@@ -1,3 +1,5 @@
+/*mainDrones.c*/
+
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
@@ -5,10 +7,12 @@
 #include <stdio.h>
 
 #include "TADs/iterador/iterador.h"
+#include "TADs/sequencia/sequencia.h"
 
 #include "base.h"
 #include "sistema.h"
 #include "drone.h"
+#include "encomendas.h"
 #include "coordenadas.h"
 
 #define MAX_LINHA	80
@@ -80,7 +84,7 @@ void cmdMenu(void){
 	printf("  . - finaliza a execução do programa\n");
 }
 
-void interpretador(sistema s, base b, int *num_drones){
+void interpretador(sistema s, base b, int *num_drones, int *num_encomendas){
 
 	char linha[MAX_LINHA], cmd;
 	do {
@@ -107,7 +111,7 @@ void interpretador(sistema s, base b, int *num_drones){
 				//break;
 
 			case 'E':
-				printf("Nova encomenda\n");
+				cmdBaseEncomenda(linha, b, num_encomendas);
 				break;
 				
 			case 'T': cmdTempoAvanca(s, linha); break;
@@ -131,8 +135,9 @@ int main(void){
 	base b = criaBase(nome, c);
 
 	int num_drones = 0;
+	int num_encomendas = 1000;
 
-	interpretador(s, b, &num_drones);
+	interpretador(s, b, &num_drones, &num_encomendas);
 	
 	destroiSistema(s);
 	//txtDrone(d, linha);
