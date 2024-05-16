@@ -48,6 +48,35 @@ void destroiEncomenda(encomenda e) {
     free(e);
 }
 
+int idEncomenda(encomenda e){
+    return e->id;
+}
+
+int pesoEncomenda(encomenda e){
+    return e->pesoE;
+}
+
+
+int latitudeEncomenda(encomenda e){
+    return e->latitudeE;
+}
+
+int longitudeEncomenda(encomenda e){
+    return e->longitudeE;
+}
+
+int criacaoEncomenda(encomenda e){
+    return e->criaE;
+}
+
+int saidaEncomenda(encomenda e){
+	return e->saidaE;
+}
+
+int entregaEncomenda(encomenda e){
+	return e->entregaE;
+}
+
 void cmdBaseEncomenda(char *linha, base b, int *num_encomendas) {
 
     int peso = 0,  lat=0, lon=0;
