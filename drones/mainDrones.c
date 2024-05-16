@@ -104,11 +104,19 @@ void interpretador(sistema s, base b, int *num_drones, int *num_encomendas){
 					break;
     			}
 
-				cmdBasedrone(linha, b, num_drones);
+				cmdBasicoDrone(linha, b, num_drones);
     			break;
 
-			//case 'C': criaDroneColetivo(linha, d);
-				//break;
+			case 'C':
+				int nmr_ids[5];
+
+				if(sscanf(linha + 1, "%d %d %d %d %d %d", &nmr_ids[0], &nmr_ids[1], &nmr_ids[2], &nmr_ids[3], &nmr_ids[4], &nmr_ids[5]) < 2){
+					printf("Não pode fazer isso.\n");
+					break;
+				}
+				
+				cmdColetivoDrone(linha, b, num_drones);
+				break;
 
 			case 'E':
 				cmdBaseEncomenda(linha, b, num_encomendas);
