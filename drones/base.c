@@ -4,9 +4,11 @@
 
 #include "TADs/iterador/iterador.h"
 #include "TADs/sequencia/sequencia.h"
-#include "coordenadas.h"
+
 #include "base.h"
+#include "sistema.h"
 #include "drone.h"
+#include "coordenadas.h"
 
 #define CAP 150
 
@@ -58,12 +60,22 @@ void avancaUmaHoraBase(base b, int tempo) {
 }
 
 void adicionaDroneBase(base b, drone d) {
-
     adicionaPosSequencia(b->drones, d, tamanhoSequencia(b->drones));
-    // (acho que nao usei a seq certa)
+
 }
 
-/*n sei se e preciso*/
+
+
 iterador iteradorDaDroneBase(base b){
     return iteradorSequencia(b->drones);
 }
+
+sequencia sequenciaDrones(base b){
+    return b->drones;
+}
+
+/*sequenciaDronesBase(b) ----> na base.c
+sequencia sequenciaDronesBase(base b){
+return b->drones;
+}*/
+
