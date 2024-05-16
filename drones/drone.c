@@ -151,3 +151,19 @@ void cmdColetivodrone(char *linha, base b, int *num_drones){
     printf("Adicionado drone(cat=%s, id=%d, cap=%d, alc=%d/%d, voo=%d, manut=%d)\n", novo_drone->cat, novo_drone->id, novo_drone->cap, novo_drone->alcD, novo_drone->alc, novo_drone->voo, novo_drone->man);
 
 }
+
+void printDrones(base b) {
+    sequencia _drones_ = sequenciaDrones(b);
+    
+    for (int i = 0; i < tamanhoSequencia(_drones_); i++) { // Parêntese adicionado aqui
+        drone d = elementoPosSequencia(_drones_, i);
+
+        if (strcmp(d->cat, "basico") == 0) {
+            printf("Adicionado drone(cat=%s, id=%d, cap=%d, alc=%d/%d, voo=%d, manut=%d)\n", d->cat, d->id, d->cap, d->alcD, d->alc, d->voo, d->man);
+        }
+        if (strcmp(d->cat, "coletivo") == 0) { 
+            printf("Adicionado drone(cat=%s, id=%d, cap=%d, alc=%d/%d, voo=%d, manut=%d)\n", d->cat, d->id, d->cap, d->alcD, d->alc, d->voo, d->man);
+        }
+    }
+}
+
