@@ -1,16 +1,16 @@
-/*base.h*/
-
 #ifndef BASE_H_
 #define BASE_H_
 
-/*TAD´s usados*/
+#include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "TADs/iterador/iterador.h"
 #include "TADs/sequencia/sequencia.h"
-
-#include "base.h"
-#include "sistema.h"
-#include "drone.h"
 #include "coordenadas.h"
+#include "drone.h"
+#include "encomendas.h"
+
 /* Tipo de dados: base */
 typedef struct _base *base;
 
@@ -30,7 +30,13 @@ Pre-condições: b!=NULL
 ***********************************************/
 void destroiBase(base b);
 
-/*comentar*/
+/***********************************************
+destroiBaseEDrones - Liberta a memória ocupada pela instância da estrutura associada ao tipo base,
+bem como pelos drones e encomendas nela contidos.
+Parâmetros: b - base a ser destruída
+Retorno:
+Pre-condições: b!=NULL
+***********************************************/
 void destroiBaseEDrones(base b);
 
 /***********************************************
@@ -50,20 +56,43 @@ Pre-condições: b!=NULL
 coordenadas localizacaoBase(base b);
 
 /***********************************************
-avancaUmaHoraBase - Avança o tempo da base em uma hora.
+avancaUmaHoraBase - Avança o tempo da base em um dado número de horas.
 Parâmetros: b - base cujo tempo será avançado, tempo - número de horas a serem avançadas
 Retorno:
 Pre-condições: b!=NULL, tempo >= 0
 ***********************************************/
 void avancaUmaHoraBase(base b, int tempo);
 
-/*comentar*/
+/***********************************************
+adicionaDroneBase - Adiciona um drone à base.
+Parâmetros: b - base à qual o drone será adicionado, d - drone a ser adicionado
+Retorno:
+Pre-condições: b!=NULL, d!=NULL
+***********************************************/
 void adicionaDroneBase(base b, drone d);
 
-sequencia sequenciaDrones(base b);
-/*
-iterador iteradorDaDroneBase(base b); // idk se e preciso
-*/
+/***********************************************
+adicionaEncomendaBase - Adiciona uma encomenda à base.
+Parâmetros: b - base à qual a encomenda será adicionada, e - encomenda a ser adicionada
+Retorno:
+Pre-condições: b!=NULL, e!=NULL
+***********************************************/
+void adicionaEncomendaBase(base b, encomenda e);
 
+/***********************************************
+iteradorDaDroneBase - Cria um iterador para os drones da base.
+Parâmetros: b - base da qual se quer criar o iterador
+Retorno: iterador para os drones da base
+Pre-condições: b!=NULL
+***********************************************/
+iterador iteradorDaDroneBase(base b);
 
-#endif /*BASE_H_*/
+/***********************************************
+iteradorDaEncomendasBase - Cria um iterador para as encomendas da base.
+Parâmetros: b - base da qual se quer criar o iterador
+Retorno: iterador para as encomendas da base
+Pre-condições: b!=NULL
+***********************************************/
+iterador iteradorDaEncomendasBase(base b);
+
+#endif /* BASE_H_ */
