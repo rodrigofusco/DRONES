@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #include "TADs/iterador/iterador.h"
 #include "TADs/sequencia/sequencia.h"
@@ -74,6 +75,7 @@ void adicionaEncomendaBase(base b, encomenda e) {
     // (acho que nao usei a seq certa)
 }
 
+
 /*n sei se e preciso*/
 iterador iteradorDaDroneBase(base b){
     return iteradorSequencia(b->drones);
@@ -81,4 +83,70 @@ iterador iteradorDaDroneBase(base b){
 
 iterador iteradorDaEncomendasBase(base b){
     return iteradorSequencia(b->encomendas);
+}
+
+//cenas para a lista
+
+int daLotacaoBase(base b){
+    return tamanhoSequencia(b->drones) + tamanhoSequencia(b->encomendas);
+}
+
+drone daDroneBase(base b, int i){
+    return (drone)elementoPosSequencia(b->drones, i);
+}
+
+encomenda daEncomendasBase(base b, int i){
+    return (encomenda)elementoPosSequencia(b->encomendas, i);
+}
+
+void cmdListagemBase(char *linha, base b){
+    int i;
+    drone d;
+    encomenda e;
+
+    int numDrones = tamanhoSequencia(b->drones);
+    int numEncomendas = tamanhoSequencia(b->encomendas);
+
+    if (numDrones == 0 && numEncomendas == 0) {
+        printf("Base Vazia.\n");
+    } else {
+        // Listando drones
+        for (i = 0; i < numDrones; i++) {
+            d = daDroneBase(b, i);
+            /*
+            const char* categoria = categoriaDrone(d);
+            if (strcmp(categoria, "coletivo") == 0) {
+                printf("drone(cat=%s, id=%d, cap=%d, alc=%d/%d, voo=%d, manut=%d, elems=(",
+                    categoria, idDrone(d), capacidadeCargaDrone(d), alcanceDrone(d),
+                    alcanceDisponivelDrone(d), restoVooDrone(d), restoManutencaoDrone(d));
+                
+                iterador itElems = iteradorDronesColetivo(d);
+                while (temSeguinteIterador(itElems)) {
+                    drone dElem = seguinteIterador(itElems);
+                    printf("%d ", idDrone(dElem));
+                }
+                printf("))\n");
+                destroiIterador(itElems);
+
+            } else {
+                printf("drone(cat=%s, id=%d, cap=%d, alc=%d/%d, voo=%d, manut=%d)\n",
+                    categoria, idDrone(d), capacidadeCargaDrone(d), alcanceDrone(d),
+                    alcanceDisponivelDrone(d), restoVooDrone(d), restoManutencaoDrone(d));
+            }*/
+            printf("drone(cat=%s, id=%d, cap=%d, alc=%d/%d, voo=%d, manut=%d)\n",
+                    "basico", idDrone(d), capacidadeCargaDrone(d), alcanceDrone(d),
+                    alcanceDisponivelDrone(d), restoVooDrone(d), restoManutencaoDrone(d));
+        }
+
+        
+
+        // Listando encomendas
+        for (i = 0; i < numEncomendas; i++) {
+            e = daEncomendasBase(b, i);
+            printf("encomenda(id=%d, peso=%d, coord=(%d,%d), cria=%d, saida=%d, entrega=%d)\n", 
+                idEncomenda(e), pesoEncomenda(e), latitudeEncomenda(e), 
+                longitudeEncomenda(e), criacaoEncomenda(e), saidaEncomenda(e), 
+                entregaEncomenda(e));
+        }
+    }
 }
