@@ -148,6 +148,6 @@ void cmdColetivodrone(char *linha, base b, int *num_drones){
     adicionaDroneBase(b, novo_drone);
 
 
-    //printf("Adicionado drone(cat=%s, id=%d, cap=%d, alc=%d/%d, voo=%d, manut=%d, elems(%d, %d))\n", novo_drone->cat, id_coletivo, d->cap, d->alcD, d->alc, d->voo, d->man, d->id, d->id);
+    printf("Adicionado drone(cat=%s, id=%d, cap=%d, alc=%d/%d, voo=%d, manut=%d)\n", novo_drone->cat, novo_drone->id, novo_drone->cap, novo_drone->alcD, novo_drone->alc, novo_drone->voo, novo_drone->man);
 
 }
