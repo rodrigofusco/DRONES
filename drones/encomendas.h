@@ -28,4 +28,18 @@ Pre-condições: linha!=NULL, b!=NULL, num_encomendas!=NULL
 ***********************************************/
 void cmdBaseEncomenda(char *linha, base b, int *num_encomendas);
 
+int idEncomenda(encomenda e);
+
+int pesoEncomenda(encomenda e);
+
+int latitudeEncomenda(encomenda e);
+
+int longitudeEncomenda(encomenda e);
+
+int criacaoEncomenda(encomenda e);
+
+int saidaEncomenda(encomenda e);
+
+int entregaEncomenda(encomenda e);
+
 #endif /* ENCOMENDAS_H_ */
