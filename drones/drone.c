@@ -77,7 +77,7 @@ int restoManutencaoDrone(drone d){
    
 }
 
-void cmdBasicodrone(char *linha, base b, int *num_drones) {
+void cmdBasicoDrone(char *linha, base b, int *num_drones) {
     int cap = 0, alc = 0;
 
     sscanf(linha + 1, "%d %d", &cap, &alc);
@@ -102,7 +102,7 @@ void cmdBasicodrone(char *linha, base b, int *num_drones) {
 
 
 
-void cmdColetivodrone(char *linha, base b, int *num_drones){
+void cmdColetivoDrone(char *linha, base b, int *num_drones){
     //alcance do drone coletivo é o menor do alcance entre os drones que formam o coletivo
     int nmr_ids[5];
     int cap_coletivo = 0, alc_coletivo = INT_MAX;
