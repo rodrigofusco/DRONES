@@ -11,7 +11,6 @@
 #include "drone.h"
 #include "encomendas.h"
 
-/* Tipo de dados: base */
 typedef struct _base *base;
 
 /***********************************************
@@ -95,12 +94,36 @@ Pre-condições: b!=NULL
 ***********************************************/
 iterador iteradorDaEncomendasBase(base b);
 
+/***********************************************
+daLotacaoBase - Retorna a lotação atual da base (soma de drones e encomendas).
+Parâmetros: b - base da qual se quer obter a lotação
+Retorno: lotação atual da base
+Pre-condições: b!=NULL
+***********************************************/
 int daLotacaoBase(base b);
 
+/***********************************************
+daDroneBase - Retorna o drone na posição i da base.
+Parâmetros: b - base da qual se quer obter o drone, i - índice do drone na base
+Retorno: drone na posição i da base
+Pre-condições: b!=NULL, i deve ser um índice válido
+***********************************************/
 drone daDroneBase(base b, int i);
 
+/***********************************************
+daEncomendasBase - Retorna a encomenda na posição i da base.
+Parâmetros: b - base da qual se quer obter a encomenda, i - índice da encomenda na base
+Retorno: encomenda na posição i da base
+Pre-condições: b!=NULL, i deve ser um índice válido
+***********************************************/
 encomenda daEncomendasBase(base b, int i);
 
+/***********************************************
+cmdListagemBase - Lista todos os drones e encomendas presentes na base.
+Parâmetros: b - base da qual se quer listar os drones e encomendas
+Retorno:
+Pre-condições: b!=NULL
+***********************************************/
 void cmdListagemBase(char *linha, base b);
 
 #endif /* BASE_H_ */
