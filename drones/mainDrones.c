@@ -113,6 +113,10 @@ void interpretador(sistema s, base b, int *num_drones, int *num_encomendas){
 			case 'E':
 				cmdBaseEncomenda(linha, b, num_encomendas);
 				break;
+
+			case 'L':
+				cmdListagemBase(linha, b);
+				break;
 				
 			case 'T': cmdTempoAvanca(s, linha); break;
 
