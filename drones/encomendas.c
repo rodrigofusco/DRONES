@@ -1,3 +1,5 @@
+/*encomendas.c*/
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
@@ -33,45 +35,42 @@ encomenda criaEncomenda(int peso, int lat, int lon) {
     e->pesoE = peso;
     e->latitudeE = lat;
     e->longitudeE = lon;
-    e->momentoCriacao = 0;
-    e->momentoSaida = 0;
-    e->momentoE = 0;
+    e->criaE = 0;
+    e->saidaE = 0;
+    e->entregaE = 0;
 
     return e;
 }
 
 void destroiEncomenda(encomenda e) {
     if (e == NULL)
-        return NULL;
-    destroiCoordenadas(e->destino);
+        return;
     free(e);
 }
 
-void cmdBaseEncomenda(char *linha, encomenda e, int *num_encomendas) {
+void cmdBaseEncomenda(char *linha, base b, int *num_encomendas) {
 
-    //ISTO TUDO POR ALTERAR
-    //
-    //
+    int peso = 0,  lat=0, lon=0;
 
-    
-    int cap = 0, alc = 0;
+    sscanf(linha + 1, "%d %d %d", &peso, &lat, &lon);
 
-    sscanf(linha + 1, "%d %d", &cap, &alc);
-
-    // Criar um novo drone
-    drone novo_drone = criaDrone(cap, alc);
-    if (novo_drone == NULL) {
-        printf("Erro ao criar o novo drone\n");
+    // Criar um nova encomenda
+    encomenda nova_encomenda = criaEncomenda(peso, lat, lon);
+    if (nova_encomenda == NULL) {
+        printf("Erro ao criar o nova encomenda\n");
         return;
     }
 
-    // Atualizar o ID do novo drone e a categoria
-    novo_drone->id = ++(*num_drones);
-    novo_drone->cat = "basico";
 
-    // Adicionar o novo drone à base de drones
-    adicionaDroneBase(b, novo_drone);
+    // Atualizar o ID do novo drone e a categoria
+    
+    nova_encomenda->id = ++(*num_encomendas);
+
+    // Adicionar o nova encomenda à base
+
+    adicionaEncomendaBase(b, nova_encomenda);
 
     // Imprimir as informações do novo drone
-    printf("Adicionado drone(cat=%s, id=%d, cap=%d, alc=%d/%d, voo=%d, manut=%d)\n", novo_drone->cat, novo_drone->id, novo_drone->cap, novo_drone->alcD, novo_drone->alc, novo_drone->voo, novo_drone->man);
+    printf("Adicionada encomenda(id=%d, peso=%d, coord=(%d,%d), cria=%d, saida=%d, entrega=%d)\n",
+     nova_encomenda->id, nova_encomenda->pesoE, nova_encomenda->latitudeE, nova_encomenda->longitudeE, nova_encomenda->criaE, nova_encomenda->saidaE, nova_encomenda->entregaE);
 }
