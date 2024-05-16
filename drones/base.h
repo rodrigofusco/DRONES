@@ -118,6 +118,8 @@ Pre-condições: b!=NULL, i deve ser um índice válido
 ***********************************************/
 encomenda daEncomendasBase(base b, int i);
 
+sequencia sequenciaDrones(base b);
+
 /***********************************************
 cmdListagemBase - Lista todos os drones e encomendas presentes na base.
 Parâmetros: b - base da qual se quer listar os drones e encomendas
