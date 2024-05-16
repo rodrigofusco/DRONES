@@ -106,7 +106,6 @@ sequencia sequenciaDrones(base b){
 
 void cmdListagemBase(char *linha, base b){
     int i;
-    drone d;
     encomenda e;
 
     int numDrones = tamanhoSequencia(b->drones);
@@ -116,35 +115,7 @@ void cmdListagemBase(char *linha, base b){
         printf("Base Vazia.\n");
     } else {
         // Listando drones
-        for (i = 0; i < numDrones; i++) {
-            d = daDroneBase(b, i);
-            /*
-            const char* categoria = categoriaDrone(d);
-            if (strcmp(categoria, "coletivo") == 0) {
-                printf("drone(cat=%s, id=%d, cap=%d, alc=%d/%d, voo=%d, manut=%d, elems=(",
-                    categoria, idDrone(d), capacidadeCargaDrone(d), alcanceDrone(d),
-                    alcanceDisponivelDrone(d), restoVooDrone(d), restoManutencaoDrone(d));
-                
-                iterador itElems = iteradorDronesColetivo(d);
-                while (temSeguinteIterador(itElems)) {
-                    drone dElem = seguinteIterador(itElems);
-                    printf("%d ", idDrone(dElem));
-                }
-                printf("))\n");
-                destroiIterador(itElems);
-
-            } else {
-                printf("drone(cat=%s, id=%d, cap=%d, alc=%d/%d, voo=%d, manut=%d)\n",
-                    categoria, idDrone(d), capacidadeCargaDrone(d), alcanceDrone(d),
-                    alcanceDisponivelDrone(d), restoVooDrone(d), restoManutencaoDrone(d));
-            }*/
-            printf("drone(cat=%s, id=%d, cap=%d, alc=%d/%d, voo=%d, manut=%d)\n",
-                    "basico", idDrone(d), capacidadeCargaDrone(d), alcanceDrone(d),
-                    alcanceDisponivelDrone(d), restoVooDrone(d), restoManutencaoDrone(d));
-        }
-
-        
-
+        printDrones(b);
         // Listando encomendas
         for (i = 0; i < numEncomendas; i++) {
             e = daEncomendasBase(b, i);
