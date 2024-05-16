@@ -159,10 +159,10 @@ void printDrones(base b) {
         drone d = elementoPosSequencia(_drones_, i);
 
         if (strcmp(d->cat, "basico") == 0) {
-            printf("Adicionado drone(cat=%s, id=%d, cap=%d, alc=%d/%d, voo=%d, manut=%d)\n", d->cat, d->id, d->cap, d->alcD, d->alc, d->voo, d->man);
+            printf("drone(cat=%s, id=%d, cap=%d, alc=%d/%d, voo=%d, manut=%d)\n", d->cat, d->id, d->cap, d->alcD, d->alc, d->voo, d->man);
         }
         if (strcmp(d->cat, "coletivo") == 0) { 
-            printf("Adicionado drone(cat=%s, id=%d, cap=%d, alc=%d/%d, voo=%d, manut=%d)\n", d->cat, d->id, d->cap, d->alcD, d->alc, d->voo, d->man);
+            printf("drone(cat=%s, id=%d, cap=%d, alc=%d/%d, voo=%d, manut=%d)\n", d->cat, d->id, d->cap, d->alcD, d->alc, d->voo, d->man);
         }
     }
 }
