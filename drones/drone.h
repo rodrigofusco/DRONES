@@ -67,12 +67,10 @@ Pre-condições: d != NULL
 ***********************************************/
 int restoManutencaoDrone(drone d);
 
-void cmdBasedrone(char *linha, base b, int *num_drones);
+void cmdBasicoDrone(char *linha, base b, int *num_drones);
 
-//void criaDroneColetivo(char *linha, drone d);
+void cmdColetivoDrone(char *linha, base b, int *num_drones);
 
-
-
-//void Saber_merdas(drone d); 
+void printDrones(base b);
 
 #endif /* DRONE_H_ */
