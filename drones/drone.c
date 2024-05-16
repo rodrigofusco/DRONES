@@ -4,9 +4,16 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <limits.h>
 
-#include "drone.h"
+#include "TADs/iterador/iterador.h"
+#include "TADs/sequencia/sequencia.h"
+
 #include "base.h"
+#include "sistema.h"
+#include "drone.h"
+#include "coordenadas.h"
+
 
 struct _drone{
     char *cat; // se é coletivo ou se é basico
@@ -70,7 +77,7 @@ int restoManutencaoDrone(drone d){
    
 }
 
-void cmdBasedrone(char *linha, base b, int *num_drones) {
+void cmdBasicodrone(char *linha, base b, int *num_drones) {
     int cap = 0, alc = 0;
 
     sscanf(linha + 1, "%d %d", &cap, &alc);
@@ -95,31 +102,52 @@ void cmdBasedrone(char *linha, base b, int *num_drones) {
 
 
 
-/*
-void criaDroneColetivo(char *linha, drone d){
+void cmdColetivodrone(char *linha, base b, int *num_drones){
     //alcance do drone coletivo é o menor do alcance entre os drones que formam o coletivo
-    int nrmdrones[5];
-    int id_coletivo = 0, cap_coletivo = 0, alc_coletivo = 0;
-    char categoria_coletivo[12] = "coletivo";
+    int nmr_ids[5];
+    int cap_coletivo = 0, alc_coletivo = INT_MAX;
 
-    drone d1 = criaDrone(cap_coletivo, alc_coletivo);
-    int a = idDrone(d);
-    a++;
+    // Lendo os IDs dos drones da linha de entrada
+    int num_ids_lidos = sscanf(linha + 1, "%d %d %d %d %d %d", &nmr_ids[0], &nmr_ids[1], &nmr_ids[2], &nmr_ids[3], &nmr_ids[4], &nmr_ids[5]);
+
+    sequencia _drones_ = sequenciaDrones(b);
     
-	sscanf(linha + 1, "%d %d %d %d %d %d", &nrmdrones[0], &nrmdrones[1], &nrmdrones[2], &nrmdrones[3], &nrmdrones[4], &nrmdrones[5]);
-
-    for(int i = 0; i < 6; i++){
-        if(nrmdrones[i] == 0){
-            
+    // Verificando o número de IDs lidos e processando-os
+    for (int i = 0; i < num_ids_lidos; i++) {
+        // Obtendo o drone correspondente ao ID da sequência
+        drone exp = elementoPosSequencia(_drones_, nmr_ids[i] - 1);
+    
+        // Verificando se o drone foi encontrado
+        if (exp != NULL) {
+            // Adicionando a capacidade do drone coletivo
+            cap_coletivo += exp->cap;
         }
-        
     }
-    printf("Adicionado drone(cat=%s, id=%d, cap=%d, alc=%d/%d, voo=%d, manut=%d, elems(%d, %d))\n", categoria_coletivo, id_coletivo, d->cap, d->alcD, d->alc, d->voo, d->man, d->id, d->id);
+
+    // Imprimindo a capacidade coletiva
+    printf("capacidade coletiva: %d\n", cap_coletivo);
+
+    for (int i = 0; i < num_ids_lidos; i++){
+        
+        drone exp = elementoPosSequencia(_drones_, nmr_ids[i] - 1);
+
+        if(exp != NULL){
+            if(exp->alc < alc_coletivo){
+                alc_coletivo = exp->alc;
+            }
+        }
+    }
+    printf("alcance coletivo: %d\n", alc_coletivo);
+
+    drone novo_drone = criaDrone(cap_coletivo, alc_coletivo);
+
+    // Atualizar o ID do novo drone e a categoria
+    novo_drone->id = ++(*num_drones);
+    novo_drone->cat = "coletivo";
+
+    adicionaDroneBase(b, novo_drone);
+
+
+    //printf("Adicionado drone(cat=%s, id=%d, cap=%d, alc=%d/%d, voo=%d, manut=%d, elems(%d, %d))\n", novo_drone->cat, id_coletivo, d->cap, d->alcD, d->alc, d->voo, d->man, d->id, d->id);
 
 }
-
-void Saber_merdas(drone d){
-    printf("Id: %d", idDrone(d));
-    printf("Cpacidade: %d", capacidadeCargaDrone(d));
-}
-*/
