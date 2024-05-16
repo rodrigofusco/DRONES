@@ -59,6 +59,7 @@ coordenadas localizacaoBase(base b) {
 }
 
 void avancaUmaHoraBase(base b, int tempo) {
+    
     b->tempo += tempo;
     // Fazer
 }
@@ -97,6 +98,10 @@ drone daDroneBase(base b, int i){
 
 encomenda daEncomendasBase(base b, int i){
     return (encomenda)elementoPosSequencia(b->encomendas, i);
+}
+
+sequencia sequenciaDrones(base b){
+    return b->drones;
 }
 
 void cmdListagemBase(char *linha, base b){
