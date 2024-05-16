@@ -3,8 +3,14 @@
 #ifndef BASE_H_
 #define BASE_H_
 
+/*TAD´s usados*/
+#include "TADs/iterador/iterador.h"
+#include "TADs/sequencia/sequencia.h"
 
-
+#include "base.h"
+#include "sistema.h"
+#include "drone.h"
+#include "coordenadas.h"
 /* Tipo de dados: base */
 typedef struct _base *base;
 
@@ -54,7 +60,10 @@ void avancaUmaHoraBase(base b, int tempo);
 /*comentar*/
 void adicionaDroneBase(base b, drone d);
 
-/*conentar*/
+sequencia sequenciaDrones(base b);
+/*
 iterador iteradorDaDroneBase(base b); // idk se e preciso
+*/
+
 
 #endif /*BASE_H_*/
