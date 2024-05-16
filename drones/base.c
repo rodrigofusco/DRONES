@@ -1,14 +1,15 @@
+/*base.c*/
+
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "TADs/iterador/iterador.h"
 #include "TADs/sequencia/sequencia.h"
-
-#include "base.h"
-#include "sistema.h"
-#include "drone.h"
 #include "coordenadas.h"
+#include "base.h"
+#include "drone.h"
+#include "encomendas.h"
 
 #define CAP 150
 
@@ -18,6 +19,7 @@ struct _base {
     coordenadas localizacao;
     int tempo;
     sequencia drones; 
+    sequencia encomendas;
 };
 
 base criaBase(char *nome, coordenadas localizacao) {
@@ -27,7 +29,8 @@ base criaBase(char *nome, coordenadas localizacao) {
     b->nome = strcpy(malloc(strlen(nome) + 1), nome);
     b->localizacao = localizacao;
     b->tempo = 0;
-    b->drones = criaSequencia(CAP, (destroiFun)destroiDrone); 
+    b->drones = criaSequencia(CAP, (destroiFun)destroiDrone);
+    b->encomendas = criaSequencia(CAP, (destroiFun)destroiEncomenda);
     return b;
 }
 
@@ -60,22 +63,22 @@ void avancaUmaHoraBase(base b, int tempo) {
 }
 
 void adicionaDroneBase(base b, drone d) {
-    adicionaPosSequencia(b->drones, d, tamanhoSequencia(b->drones));
 
+    adicionaPosSequencia(b->drones, d, tamanhoSequencia(b->drones));
+    // (acho que nao usei a seq certa)
 }
 
+void adicionaEncomendaBase(base b, encomenda e) {
 
+    adicionaPosSequencia(b->encomendas, e, tamanhoSequencia(b->encomendas));
+    // (acho que nao usei a seq certa)
+}
 
+/*n sei se e preciso*/
 iterador iteradorDaDroneBase(base b){
     return iteradorSequencia(b->drones);
 }
 
-sequencia sequenciaDrones(base b){
-    return b->drones;
+iterador iteradorDaEncomendasBase(base b){
+    return iteradorSequencia(b->encomendas);
 }
-
-/*sequenciaDronesBase(b) ----> na base.c
-sequencia sequenciaDronesBase(base b){
-return b->drones;
-}*/
-
