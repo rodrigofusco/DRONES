@@ -69,6 +69,12 @@ int restoManutencaoDrone(drone d);
 
 void cmdBasicoDrone(char *linha, base b, int *num_drones);
 
+/***********************************************
+cmdColetivoDrone - Processa o comando para criar um drone coletivo.
+Parâmetros: linha - linha de comando com os IDs dos drones a serem agrupados, b - base onde os drones estão localizados, num_drones - contador do número de drones
+Retorno:
+Pre-condições: linha!=NULL, b!=NULL, num_drones!=NULL
+***********************************************/
 void cmdColetivoDrone(char *linha, base b, int *num_drones);
 
 void printDrones(base b);
