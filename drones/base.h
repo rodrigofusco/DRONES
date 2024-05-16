@@ -95,4 +95,12 @@ Pre-condições: b!=NULL
 ***********************************************/
 iterador iteradorDaEncomendasBase(base b);
 
+int daLotacaoBase(base b);
+
+drone daDroneBase(base b, int i);
+
+encomenda daEncomendasBase(base b, int i);
+
+void cmdListagemBase(char *linha, base b);
+
 #endif /* BASE_H_ */
