@@ -66,9 +66,15 @@ void cmdTempoAvanca(sistema s, char *linha){
 	char ignora;
 	int horas, extra;
 	if (sscanf(linha,"%c %d %d", &ignora, &horas, &extra) != 2)
-		{ invalido(); return; }
+	{ invalido(); return; }
+
+	if(horas<0){
+		printf("Não pode fazer isso.\n");
+	}
+	else{
 	horas = tempoAvancaSistema(s, horas);
 	printf("O novo tempo e %d\n", horas);	
+	}
 }
 
 void cmdMenu(void){
@@ -96,17 +102,18 @@ void interpretador(sistema s, base b, int *num_drones, int *num_encomendas){
 		cmd = toupper(linha[0]);
 		//printf("%s", linha);
 		switch (cmd){
-			case 'B':
+			case 'B':{
 				int cap, alc;
+				char extra;
 
-    			if(sscanf(linha + 1, "%d %d", &cap, &alc) != 2){
+    			if(sscanf(linha + 1, "%d %d %c", &cap, &alc, &extra) != 2){
         			printf("Não pode fazer isso.\n");
 					break;
     			}
 
 				cmdBasicoDrone(linha, b, num_drones);
     			break;
-
+			}
 			case 'C':
 				int nmr_ids[5];
 
@@ -119,8 +126,16 @@ void interpretador(sistema s, base b, int *num_drones, int *num_encomendas){
 				break;
 
 			case 'E':
-				cmdBaseEncomenda(linha, b, num_encomendas);
-				break;
+
+				int peso, lat, lon;
+				char extra;
+				if (sscanf(linha + 1, "%d %d %d %c", &peso, &lat, &lon, &extra) != 3) {
+					printf("Não pode fazer isso.\n");
+					break;
+				} else {
+					cmdBaseEncomenda(linha, b, num_encomendas);
+					break;
+				}
 
 			case 'L':
 				cmdListagemBase(linha, b);
