@@ -3,6 +3,19 @@
 #include <stdio.h>
 #include "drone.h"
 
+struct _drone {
+    char *cat;
+    int id;
+    int cap;
+    int alc;
+    int alcD;
+    int voo;
+    int man;
+    int num_elems;
+    int elems[1000];
+    int elementos[6];
+    int numElementos;
+};
 
 drone criaDrone(int capacidade, int alcance) {
     drone d = (drone) malloc(sizeof(struct _drone));
@@ -68,4 +81,15 @@ int *elementosDroneColetivo(drone d){
 
 int tamanhoElementosDroneColetivo(drone d) {
     return d->numElementos;
+}
+
+int numElementosDrone(drone d){
+    return d->numElementos;
+}
+
+void defineElementosDoColetivoDrone(drone d, int *elems, int num_elems){
+    for (int i = 0; i < num_elems; i++) {
+        d->elementos[i] = elems[i];
+    }
+    d->numElementos = num_elems;
 }
