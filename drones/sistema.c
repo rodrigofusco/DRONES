@@ -95,28 +95,22 @@ drone ColetivoDroneSistema(sistema s, int *ids, int num_ids, int *num_drones) {
             if (idDrone(d) == ids[i]) {
                 elems_coletivo[num_elems++] = idDrone(d);
                 capacidade_total += capacidadeCargaDrone(d);
-                if(alcanceDrone(d) < menor_alcance) {
+                if (alcanceDrone(d) < menor_alcance) {
                     menor_alcance = alcanceDrone(d);
                 }
             }
         }
     }
-
     if (menor_alcance == INT_MAX) {
-    menor_alcance = 0; 
+        menor_alcance = 0; 
     }
-
     drone novo_drone = criaDrone(capacidade_total, menor_alcance);
     if (novo_drone == NULL) {
         return NULL;
     }
-
     defineCategoriaDrone(novo_drone, "coletivo");
     defineIdDrone(novo_drone, ++(*num_drones));
-    for (int i = 0; i < num_elems; i++) {
-        novo_drone->elementos[i] = elems_coletivo[i];
-    }
-    novo_drone->numElementos = num_elems;
+    defineElementosDoColetivoDrone(novo_drone, elems_coletivo, num_elems);
     adicionaDroneColetivoBase(s->base, novo_drone);
 
     return novo_drone;
