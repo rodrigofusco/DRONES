@@ -19,7 +19,7 @@ struct _base {
     char *nome;
     coordenadas localizacao;
     int tempo;
-    sequencia drones; 
+    sequencia drones;
     sequencia encomendas;
 };
 
@@ -31,12 +31,15 @@ base criaBase(char *nome, coordenadas localizacao) {
     b->localizacao = localizacao;
     b->tempo = 0;
     b->drones = criaSequencia(CAP, (destroiFun)destroiDrone);
+   
     b->encomendas = criaSequencia(CAP, (destroiFun)destroiEncomenda);
+    
     return b;
 }
 
 void destroiBase(base b) {
     destroiSequencia(b->drones); 
+    
     destroiCoordenadas(b->localizacao);
     free(b->nome);
     free(b);
@@ -45,6 +48,7 @@ void destroiBase(base b) {
 /*n sei se e necessaria*/
 void destroiBaseEDrones(base b) {
     destroiSeqEElems(b->drones); 
+    
     destroiCoordenadas(b->localizacao);
     free(b->nome);
     free(b);
@@ -64,35 +68,31 @@ void avancaUmaHoraBase(base b, int tempo) {
     // Fazer
 }
 
-void adicionaDroneBase(base b, drone d) {
+void adicionaDroneBasicoBase(base b, drone d) {
+    
+    adicionaPosSequencia(b->drones, d, tamanhoSequencia(b->drones));
+}
+
+void adicionaDroneColetivoBase(base b, drone d) {
 
     adicionaPosSequencia(b->drones, d, tamanhoSequencia(b->drones));
-    // (acho que nao usei a seq certa)
 }
 
 void adicionaEncomendaBase(base b, encomenda e) {
 
     adicionaPosSequencia(b->encomendas, e, tamanhoSequencia(b->encomendas));
-    // (acho que nao usei a seq certa)
 }
-
-
-/*n sei se e preciso*/
-iterador iteradorDaDroneBase(base b){
-    return iteradorSequencia(b->drones);
-}
-
-iterador iteradorDaEncomendasBase(base b){
-    return iteradorSequencia(b->encomendas);
-}
-
-//cenas para a lista
 
 int daLotacaoBase(base b){
-    return tamanhoSequencia(b->drones) + tamanhoSequencia(b->encomendas);
+    return tamanhoSequencia(b->drones) + tamanhoSequencia(b->encomendas)
+        + tamanhoSequencia(b->drones);
 }
 
-drone daDroneBase(base b, int i){
+drone daDroneBasicoBase(base b, int i){
+    return (drone)elementoPosSequencia(b->drones, i);
+}
+
+drone daDroneColetivoBase(base b, int i){
     return (drone)elementoPosSequencia(b->drones, i);
 }
 
@@ -100,29 +100,66 @@ encomenda daEncomendasBase(base b, int i){
     return (encomenda)elementoPosSequencia(b->encomendas, i);
 }
 
-sequencia sequenciaDrones(base b){
+sequencia sequenciaDronesBasicosBase(base b){
     return b->drones;
 }
 
-void cmdListagemBase(char *linha, base b){
-    int i;
-    encomenda e;
+sequencia sequenciaDronesColetivosBase(base b){
+    return b->drones;
+}
 
-    int numDrones = tamanhoSequencia(b->drones);
-    int numEncomendas = tamanhoSequencia(b->encomendas);
+sequencia sequenciaEncomendasBase(base b){
+    return b->encomendas;
+}
 
-    if (numDrones == 0 && numEncomendas == 0) {
-        printf("Base Vazia.\n");
-    } else {
-        // Listando drones
-        printDrones(b);
-        // Listando encomendas
-        for (i = 0; i < numEncomendas; i++) {
-            e = daEncomendasBase(b, i);
-            printf("encomenda(id=%d, peso=%d, coord=(%d,%d), cria=%d, saida=%d, entrega=%d)\n", 
-                idEncomenda(e), pesoEncomenda(e), latitudeEncomenda(e), 
-                longitudeEncomenda(e), criacaoEncomenda(e), saidaEncomenda(e), 
-                entregaEncomenda(e));
+bool droneExisteNaBase(base b, int id){
+    for (int i = 0; i < tamanhoSequencia(b->drones); i++) {
+        drone d = (drone)elementoPosSequencia(b->drones, i);
+        if (idDrone(d) == id) return true;
+    }
+    for (int i = 0; i < tamanhoSequencia(b->drones); i++) {
+        drone d = (drone)elementoPosSequencia(b->drones, i);
+        if (idDrone(d) == id) return true;
+    }
+    return false;
+}
+
+bool idDuplicadoNaBase(base b, int id){
+    sequencia dronesDaBase = sequenciaDronesBasicosBase(b);
+    for (int i = 0; i < tamanhoSequencia(dronesDaBase); i++) {
+        drone d = elementoPosSequencia(dronesDaBase, i);
+        if (idDrone(d) == id && strcmp(categoriaDrone(d), "coletivo") == 0) {
+            return true;
         }
     }
+    return false;
+}
+
+void removeDroneBase(base b, int id) {
+    int i, n = tamanhoSequencia(b->drones);
+    for (i = 0; i < n; i++) {
+        drone d = (drone)elementoPosSequencia(b->drones, i);
+        if (id == idDrone(d)) {
+            removePosSequencia(b->drones, i);
+            destroiDrone(d);  // Destruir o drone para evitar vazamento de memória
+            break;
+        }
+    }
+}
+
+bool droneBasicoEmColetivo(base b, int id){
+    int n = tamanhoSequencia(b->drones);
+    for (int i = 0; i < n; i++){
+        drone d = elementoPosSequencia(b->drones, i);
+        if(strcmp(categoriaDrone(d), "coletivo") == 0){
+            int *elems = elementosDroneColetivo(d);
+            int num_elems = tamanhoElementosDroneColetivo(d);
+            for (int j = 0; j < num_elems; j++){
+                if (elems[j] == id){
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 }
