@@ -3,23 +3,10 @@
 
 #include <stdbool.h>
 
-// Definição da estrutura _drone
-typedef struct _drone {
-    char *cat;
-    int id;
-    int cap;
-    int alc;
-    int alcD;
-    int voo;
-    int man;
-    int num_elems;
-    int elems[1000];
-    int elementos[6];
-    int numElementos;
-} drone_struct;
+typedef struct _base *base;
 
 // Definição de um ponteiro para a estrutura _drone
-typedef drone_struct* drone;
+typedef struct _drone *drone;
 
 // Protótipos das funções
 drone criaDrone(int capacidade, int alcance);
@@ -36,4 +23,8 @@ int restoManutencaoDrone(drone d);
 
 int *elementosDroneColetivo(drone d);
 int tamanhoElementosDroneColetivo(drone d);
+int numElementosDrone(drone d);
+void defineElementosDoColetivoDrone(drone d, int *elems, int num_elems);
+
+
 #endif // DRONE_H
