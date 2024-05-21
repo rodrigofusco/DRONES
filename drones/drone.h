@@ -1,82 +1,39 @@
-/*drone.h*/
+#ifndef DRONE_H
+#define DRONE_H
 
-#ifndef DRONE_H_
-#define DRONE_H_
+#include <stdbool.h>
 
-/* Tipo de dados: drone */
-typedef struct _drone* drone;
-typedef struct _base* base;
-/***********************************************
-criaDrone - Criação de uma instância da estrutura associada ao tipo drone.
-Parametros: matricula - matrícula do drone
-            hora - hora de entrada em operação do drone
-            minuto - minuto de entrada em operação do drone
-Retorno: apontador para a instância criada
-Pre-condições:
-***********************************************/
-drone criaDrone(int capacidade, int alcance); 
+// Definição da estrutura _drone
+typedef struct _drone {
+    char *cat;
+    int id;
+    int cap;
+    int alc;
+    int alcD;
+    int voo;
+    int man;
+    int num_elems;
+    int elems[1000];
+    int elementos[6];
+    int numElementos;
+} drone_struct;
 
-/*falta comentar*/
+// Definição de um ponteiro para a estrutura _drone
+typedef drone_struct* drone;
+
+// Protótipos das funções
+drone criaDrone(int capacidade, int alcance);
 void destroiDrone(drone d);
-
-/***********************************************
-idDrone - Consulta o ID do drone.
-Parametros: d - drone do qual se quer consultar o ID
-Retorno: ID do drone
-Pre-condições: d != NULL
-***********************************************/
+void defineCategoriaDrone(drone d, const char *categoria);
+void defineIdDrone(drone d, int id);
+char *categoriaDrone(drone d);
 int idDrone(drone d);
-
-/***********************************************
-capacidadeCargaDrone - Consulta a capacidade de carga do drone.
-Parametros: d - drone do qual se quer consultar a capacidade de carga
-Retorno: capacidade de carga do drone
-Pre-condições: d != NULL
-***********************************************/
 int capacidadeCargaDrone(drone d);
-
-/***********************************************
-alcanceDrone - Consulta o alcance máximo do drone.
-Parametros: d - drone do qual se quer consultar o alcance máximo
-Retorno: alcance máximo do drone
-Pre-condições: d != NULL
-***********************************************/
 int alcanceDrone(drone d);
-
-/***********************************************
-alcanceDisponivelDrone - Consulta o alcance disponível do drone.
-Parametros: d - drone do qual se quer consultar o alcance disponível
-Retorno: alcance disponível do drone
-Pre-condições: d != NULL
-***********************************************/
-int alcanceDisponivelDrone(drone d);
-
-/***********************************************
-restoVooDrone - Consulta o tempo restante de voo do drone.
-Parametros: d - drone do qual se quer consultar o tempo restante de voo
-Retorno: tempo restante de voo do drone
-Pre-condições: d != NULL
-***********************************************/
+int alcanceDisponivelDrone(drone d);    
 int restoVooDrone(drone d);
-
-/***********************************************
-restoManutencaoDrone - Consulta o tempo restante para a próxima manutenção do drone.
-Parametros: d - drone do qual se quer consultar o tempo restante para a próxima manutenção
-Retorno: tempo restante para a próxima manutenção do drone
-Pre-condições: d != NULL
-***********************************************/
 int restoManutencaoDrone(drone d);
 
-void cmdBasicoDrone(char *linha, base b, int *num_drones);
-
-/***********************************************
-cmdColetivoDrone - Processa o comando para criar um drone coletivo.
-Parâmetros: linha - linha de comando com os IDs dos drones a serem agrupados, b - base onde os drones estão localizados, num_drones - contador do número de drones
-Retorno:
-Pre-condições: linha!=NULL, b!=NULL, num_drones!=NULL
-***********************************************/
-void cmdColetivoDrone(char *linha, base b, int *num_drones);
-
-void printDrones(base b);
-
-#endif /* DRONE_H_ */
+int *elementosDroneColetivo(drone d);
+int tamanhoElementosDroneColetivo(drone d);
+#endif // DRONE_H
