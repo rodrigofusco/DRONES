@@ -14,32 +14,22 @@
 typedef struct _base *base;
 
 base criaBase(char *nome, coordenadas localizacao);
-
 void destroiBase(base b);
-
 void destroiBaseEDrones(base b);
-
 char *nomeBase(base b);
 coordenadas localizacaoBase(base b);
 void avancaUmaHoraBase(base b, int tempo);
-
 void adicionaDroneBasicoBase(base b, drone d);
 void adicionaDroneColetivoBase(base b, drone d);
 void adicionaEncomendaBase(base b, encomenda e);
-
 int daLotacaoBase(base b);
-
-drone daDroneBasicoBase(base b, int i);
-drone daDroneColetivoBase(base b, int i);
+drone daDroneBase(base b, int i);
 encomenda daEncomendasBase(base b, int i);
-
-sequencia sequenciaDronesBasicosBase(base b);
-sequencia sequenciaDronesColetivosBase(base b);
+sequencia sequenciaDronesBase(base b);
 sequencia sequenciaEncomendasBase(base b);
-
 bool droneExisteNaBase(base b, int id); //selfExplanatory
-
 //para c 1 2 3 mas 3 e coletivo
+bool EncomendaExisteNaBase(base b, int id);
 bool idDuplicadoNaBase(base b, int id);
 void removeDroneBase(base b, int id);
 bool droneBasicoEmColetivo(base b, int id);
