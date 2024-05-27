@@ -59,6 +59,10 @@ int tempoAvancaSistema(sistema s, int n){
 	return s->tempoCorrente;
 }
 
+int tempoSistema(sistema s){
+    return s->tempoCorrente;
+}
+
 void BasicoDroneSistema(sistema s, int capacidade, int alcance, int *num_drones){
     drone novo_drone = criaDrone(capacidade, alcance);
     if (novo_drone == NULL) {
@@ -70,8 +74,8 @@ void BasicoDroneSistema(sistema s, int capacidade, int alcance, int *num_drones)
     adicionaDroneBasicoBase(s->base, novo_drone);
 }
 
-void EncomendasSistema(sistema s, int peso, int lat, int lon, int *num_encomendas){
-    encomenda novaEncomenda = criaEncomenda(peso, lat, lon);
+void EncomendasSistema(sistema s, int peso, int lat, int lon, int cria, int *num_encomendas){
+    encomenda novaEncomenda = criaEncomenda(peso, lat, lon, cria);
     if (novaEncomenda == NULL) {
         return;
     }
@@ -85,7 +89,7 @@ drone ColetivoDroneSistema(sistema s, int *ids, int num_ids, int *num_drones) {
     int menor_alcance = INT_MAX;
     int elems_coletivo[MAX_ELEMS_COLETIVO];
     base b = daBaseSistema(s);
-    sequencia dronesDaBase = sequenciaDronesBasicosBase(b);
+    sequencia dronesDaBase = sequenciaDronesBase(b);
     int num_elems = 0;
 
     for (int i = 0; i < num_ids; i++) {
@@ -115,3 +119,37 @@ drone ColetivoDroneSistema(sistema s, int *ids, int num_ids, int *num_drones) {
 
     return novo_drone;
 }
+
+int distanciaEncomendaSistema(sistema s, int id){
+    base b = daBaseSistema(s);
+    coordenadas cBase = localizacaoBase(b);
+    sequencia encomendas = sequenciaEncomendasBase(b);
+
+    encomenda e = NULL;
+    for (int i = 0; i < tamanhoSequencia(encomendas); i++) {
+        encomenda temp = elementoPosSequencia(encomendas, i);
+        if (idEncomenda(temp) == id) {
+            e = temp;
+            break;
+        }
+    }
+    coordenadas cEncomenda = criaCoordenadas(latitudeEncomenda(e), longitudeEncomenda(e));
+    int distancia = distanciaCoordenadas(cBase, cEncomenda, 10);
+    return distancia;
+}
+
+void tempoSaidaEncomenda(sistema s, int id, int tempoSaida){
+    base b = daBaseSistema(s);
+    sequencia encomendas = sequenciaEncomendasBase(b);
+    tempoSaida = tempoSistema(s); 
+    encomenda e = NULL;
+    for (int i = 0; i < tamanhoSequencia(encomendas); i++) {
+        encomenda temp = elementoPosSequencia(encomendas, i);
+        if (idEncomenda(temp) == id) {
+            e = temp;
+            defineSaidaEncomenda(e, tempoSaida);
+            break;
+        }
+    }
+}
+
