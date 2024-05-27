@@ -24,7 +24,7 @@ struct _encomenda {
     int entregaE;
 };
 
-encomenda criaEncomenda(int peso, int lat, int lon) {
+encomenda criaEncomenda(int peso, int lat, int lon, int tempoCriacao){
     encomenda e = malloc(sizeof(struct _encomenda));
     if (e == NULL) {
         return NULL;
@@ -36,7 +36,7 @@ encomenda criaEncomenda(int peso, int lat, int lon) {
     e->pesoE = peso;
     e->latitudeE = lat;
     e->longitudeE = lon;
-    e->criaE = 0;
+    e->criaE = tempoCriacao;
     e->saidaE = 0;
     e->entregaE = 0;
 
@@ -73,6 +73,11 @@ int criacaoEncomenda(encomenda e){
 int saidaEncomenda(encomenda e){
 	return e->saidaE;
 }
+
+void defineSaidaEncomenda(encomenda e, int tempoSaida) {
+    e->saidaE = tempoSaida;
+}
+
 
 int entregaEncomenda(encomenda e){
 	return e->entregaE;
