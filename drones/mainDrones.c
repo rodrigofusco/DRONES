@@ -21,11 +21,9 @@
 void invalido(void){
     printf("Dados invalidos\n");
 }
-
 void proibido(void){
     printf("Nao pode fazer isso\n");
 }
-
 void cmdTempoAvanca(char *linha, sistema s){
     char ignora;
     int horas, extra;
@@ -41,7 +39,6 @@ void cmdTempoAvanca(char *linha, sistema s){
         printf("O novo tempo e' %d\n", horas);    
     }
 }
-
 void txtDroneB(drone d, char *txt){
     char *cat = "basico";
     int id = idDrone(d);
@@ -55,7 +52,6 @@ void txtDroneB(drone d, char *txt){
     sprintf(txt, "drone(cat=%s, id=%d, cap=%d, alc=%d/%d, voo=%d, manut=%d%s)",
         cat, id, cap, alcD, alc, voo, man, aux);
 }
-
 void txtDroneC(drone d, char *txt, int *elems, int num_elems) {
     char *cat = "coletivo";
     int id = idDrone(d);
@@ -74,7 +70,6 @@ void txtDroneC(drone d, char *txt, int *elems, int num_elems) {
     }
     sprintf(txt + strlen(txt), "))");
 }
-
 void txtEncomenda(encomenda e, char *txt){
     int id = idEncomenda(e);
     int peso = pesoEncomenda(e);
@@ -87,7 +82,6 @@ void txtEncomenda(encomenda e, char *txt){
     sprintf(txt, "encomenda(id=%d, peso=%d, coord=(%d,%d), cria=%d, saida=%d, entrega=%d)",
         id, peso, lat, lon, cria, saida, entrega);
 }
-
 void cmdBasicoDrone(char *linha, sistema s, int *num_drones) {
     int cap, alc;
     char extra;
@@ -104,7 +98,7 @@ void cmdBasicoDrone(char *linha, sistema s, int *num_drones) {
     
     // Obter a lista de drones básicos
     base b = daBaseSistema(s);
-    sequencia db = sequenciaDronesBasicosBase(b);
+    sequencia db = sequenciaDronesBase(b);
     
     // Acessar o último drone na lista de drones básicos
     drone novo_drone = elementoPosSequencia(db, tamanhoSequencia(db) - 1);
@@ -115,15 +109,15 @@ void cmdBasicoDrone(char *linha, sistema s, int *num_drones) {
         printf("Adicionado %s\n", txt);
     }
 }
-
 void cmdBaseEncomenda(char *linha, sistema s, int *num_encomendas) {
-    int peso = 0, lat = 0, lon = 0;
-    sscanf(linha + 1, "%d %d %d", &peso, &lat, &lon);
-    if(peso <0){
+    int peso = 0, lat = 0, lon = 0, cria = tempoSistema(s);
+    char extra;
+    if(sscanf(linha + 1, "%d %d %d %c", &peso, &lat, &lon, &extra) != 3 || peso <0){
         invalido();
+        return;
     }
     else{
-    EncomendasSistema(s, peso, lat, lon, num_encomendas);
+    EncomendasSistema(s, peso, lat, lon, cria, num_encomendas);
     encomenda nova_encomenda = daEncomendasBase(daBaseSistema(s), *num_encomendas - 1002);
 
         if (nova_encomenda) {
@@ -133,7 +127,6 @@ void cmdBaseEncomenda(char *linha, sistema s, int *num_encomendas) {
         }
     }
 }
-
 void cmdColetivoDrone(char *linha, sistema s, int *num_drones) {
     int ids[MAX_ELEMS_COLETIVO];
     int num_ids = 0;
@@ -144,7 +137,6 @@ void cmdColetivoDrone(char *linha, sistema s, int *num_drones) {
 
         if(token[0] == '\n'){ // caso se escreva so "c"
             drone novo_drone = ColetivoDroneSistema(s, ids, num_ids, num_drones);
-
             if (novo_drone) {
                 char txt[MAX_LINHA];
                 int *elems = elementosDroneColetivo(novo_drone);
@@ -155,32 +147,24 @@ void cmdColetivoDrone(char *linha, sistema s, int *num_drones) {
             return;
         }
         if (id < 0 || num_ids >= MAX_ELEMS_COLETIVO) { // c -1  ou c 1 2 3 4 5 6 7
-            invalido();
-            return;
+            invalido(); return;
         }
         if (strcmp(token, "0") == 0 || idDuplicadoNaBase(daBaseSistema(s), id)) { // c 0  ou coletivo no coletivo
-            proibido();
-            return;
+            proibido(); return;
         }
         ids[num_ids++] = id;
         token = strtok(NULL, " ");
     }
-
     if (num_ids < 1) {
-        invalido();
-        return;
+        invalido(); return;
     }
-
     base b = daBaseSistema(s);
     for (int i = 0; i < num_ids; i++) {
         if (!droneExisteNaBase(b, ids[i])) {
-            proibido();
-            return;
+            proibido(); return;
         }
     }
-
     drone novo_drone = ColetivoDroneSistema(s, ids, num_ids, num_drones);
-
     if (novo_drone) {
         char txt[MAX_LINHA];
         int *elems = elementosDroneColetivo(novo_drone);
@@ -189,13 +173,9 @@ void cmdColetivoDrone(char *linha, sistema s, int *num_drones) {
         printf("Adicionado %s\n", txt);
     }
 }
-
-
-
-
 void cmdListagem(char *linha, sistema s) {
     base b = daBaseSistema(s);
-    sequencia db = sequenciaDronesBasicosBase(b);
+    sequencia db = sequenciaDronesBase(b);
     sequencia e = sequenciaEncomendasBase(b);
     int numDronesB = tamanhoSequencia(db);
     int numEncomendas = tamanhoSequencia(e);
@@ -209,7 +189,7 @@ void cmdListagem(char *linha, sistema s) {
                 printf("%s\n", txt);
             }else{
                 int *elems = elementosDroneColetivo(droneb);
-                txtDroneC(droneb, txt, elems, droneb->numElementos);
+                txtDroneC(droneb, txt, elems, numElementosDrone(droneb));
                 printf("%s\n", txt);
             }
         }
@@ -233,7 +213,23 @@ void cmdRemoveDrone(char *linha, sistema s){
     }
     removeDroneBase(b, id);
     printf("Drone com id %d removido\n", id);
+}
 
+
+void cmdDespachaEncomenda(char *linha, sistema s) {
+    int idE, idD;
+     base b = daBaseSistema(s);
+    if ( sscanf(linha + 1, "%d %d", &idE, &idD) != 2 || !droneExisteNaBase(b, idD) ||
+     droneBasicoEmColetivo(b, idD) || !EncomendaExisteNaBase(b, idE)) {
+        invalido();
+        return;
+    }
+
+    int distancia = distanciaEncomendaSistema(s, idE);
+    printf("A distancia e: %d\n", distancia);
+
+    int tempoAtual = tempoSistema(s);
+    tempoSaidaEncomenda(s, idE, tempoAtual);
 }
 
 void cmdMenu(void){
@@ -248,7 +244,6 @@ void cmdMenu(void){
     printf("  ? - mostra os comandos disponiveis\n");
     printf("  . - finaliza a execucao do programa\n");
 }
-
 void interpretador(sistema s, int *num_drones, int *num_encomendas){
     char linha[MAX_LINHA], cmd;
     do {
@@ -259,30 +254,14 @@ void interpretador(sistema s, int *num_drones, int *num_encomendas){
         }
         cmd = toupper(linha[0]);
         switch (cmd){
-            case 'B': {
-                cmdBasicoDrone(linha, s, num_drones);
-                break;
-            }
-            case 'C': {
-                cmdColetivoDrone(linha, s, num_drones);
-                break;
-            }
-
-            case 'E': {
-                int peso, lat, lon;
-                char extra;
-                if (sscanf(linha + 1, "%d %d %d %c", &peso, &lat, &lon, &extra) != 3) {
-                    invalido(); 
-                    break;
-                } else {
-                    cmdBaseEncomenda(linha, s, num_encomendas);
-                    break;
-                }
-            }
-            
+            case 'B': cmdBasicoDrone(linha, s, num_drones); break;
+            case 'C': cmdColetivoDrone(linha, s, num_drones); break;
+            case 'E': cmdBaseEncomenda(linha, s, num_encomendas); break;
             case 'L': cmdListagem(linha, s); break;
             case 'T': cmdTempoAvanca(linha, s); break;
             case 'R': cmdRemoveDrone(linha, s); break;
+            case 'D': cmdDespachaEncomenda(linha, s); break;
+            //case '@': cmdRemoveEncomenda(linha, s); break;
             case '?': cmdMenu(); break;
             case '.': break;
             case '\n': break;
@@ -291,9 +270,7 @@ void interpretador(sistema s, int *num_drones, int *num_encomendas){
     } while (cmd != '.');
     printf ("Obrigado. Volte sempre!\n");
 }
-
 int main(void){
-    
     sistema s = criaSistema();
     int num_drones = 0;
     int num_encomendas = 1001;
