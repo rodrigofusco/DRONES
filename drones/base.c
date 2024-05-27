@@ -88,11 +88,7 @@ int daLotacaoBase(base b){
         + tamanhoSequencia(b->drones);
 }
 
-drone daDroneBasicoBase(base b, int i){
-    return (drone)elementoPosSequencia(b->drones, i);
-}
-
-drone daDroneColetivoBase(base b, int i){
+drone daDroneBase(base b, int i){
     return (drone)elementoPosSequencia(b->drones, i);
 }
 
@@ -100,11 +96,7 @@ encomenda daEncomendasBase(base b, int i){
     return (encomenda)elementoPosSequencia(b->encomendas, i);
 }
 
-sequencia sequenciaDronesBasicosBase(base b){
-    return b->drones;
-}
-
-sequencia sequenciaDronesColetivosBase(base b){
+sequencia sequenciaDronesBase(base b){
     return b->drones;
 }
 
@@ -124,8 +116,16 @@ bool droneExisteNaBase(base b, int id){
     return false;
 }
 
+bool EncomendaExisteNaBase(base b, int id){
+    for (int i = 0; i < tamanhoSequencia(b->encomendas); i++) {
+        encomenda e = (encomenda)elementoPosSequencia(b->encomendas, i);
+        if (idEncomenda(e) == id) return true;
+    }
+    return false;
+}
+
 bool idDuplicadoNaBase(base b, int id){
-    sequencia dronesDaBase = sequenciaDronesBasicosBase(b);
+    sequencia dronesDaBase = sequenciaDronesBase(b);
     for (int i = 0; i < tamanhoSequencia(dronesDaBase); i++) {
         drone d = elementoPosSequencia(dronesDaBase, i);
         if (idDrone(d) == id && strcmp(categoriaDrone(d), "coletivo") == 0) {
@@ -141,7 +141,7 @@ void removeDroneBase(base b, int id) {
         drone d = (drone)elementoPosSequencia(b->drones, i);
         if (id == idDrone(d)) {
             removePosSequencia(b->drones, i);
-            destroiDrone(d);  // Destruir o drone para evitar vazamento de memória
+            destroiDrone(d); 
             break;
         }
     }
@@ -150,13 +150,13 @@ void removeDroneBase(base b, int id) {
 bool droneBasicoEmColetivo(base b, int id){
     int n = tamanhoSequencia(b->drones);
     for (int i = 0; i < n; i++){
-        drone d = elementoPosSequencia(b->drones, i);
-        if(strcmp(categoriaDrone(d), "coletivo") == 0){
+        drone d = elementoPosSequencia(b->drones, i);//corre seq
+        if(strcmp(categoriaDrone(d), "coletivo") == 0){//ve se e coletivo
             int *elems = elementosDroneColetivo(d);
-            int num_elems = tamanhoElementosDroneColetivo(d);
+            int num_elems = tamanhoElementosDroneColetivo(d);//ids do coletivo
             for (int j = 0; j < num_elems; j++){
                 if (elems[j] == id){
-                    return true;
+                    return true;    //pertence ao coletivo
                 }
             }
         }
